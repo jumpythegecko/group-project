@@ -1,0 +1,149 @@
+class Level1 {
+
+  FBox box;     //3 new boxes
+  FBox b2;
+  FBox b3;
+
+
+
+
+  void run() {
+    if (q == 1) {
+      world.clear();     //clears what is in the world
+      world.setEdges(0, 0, 800, 600);
+      
+      p1p = 0;
+      p2p = 0;
+
+      box = new FBox(400, 200);
+      box.setPosition(width/2, height/2);     //position of box
+      box.setStatic(true);     //means it cant move
+      box.setGrabbable(false);     //cant grab it with the mouse
+      box.setFill(0, 200, 0);
+      box.setNoStroke();
+      box.setDensity(1);     //density of the box, used in colisions
+      world.add(box);     //adds this box to the world with its specified values
+
+      b2 = new FBox(20, 20);
+      b2.setPosition((width/2)-15, 50);
+      b2.setDensity(1000);
+      b2.setFill(0, 0, 255);
+      b2.setFriction(10);     //how fast it slows down when it hits something
+      b2.setGrabbable(false);
+      b2.setRotatable(false);     //it cant activally rotate
+      b2.setRotation(PI/2);     //this is the rotation it is set at
+      PImage rcar = loadImage("redcar.png");     //load car image
+      b2.attachImage(rcar);     //attack the image to the box
+      b2.setVelocity(0, 0);     //starting velocity
+      world.add(b2);     //adds this box to the world with its specified values
+
+      b3 = new FBox(20, 20);
+      b3.setFill(255, 0, 0);
+      b3.setDensity(100);
+      b3.setPosition((width/2)-15, 150);
+      b3.setGrabbable(false);
+      b3.setRotatable(false);
+      b3.setRotation(PI/2);
+      PImage racecar = loadImage("racecar.png");
+      b3.attachImage(racecar);
+      b3.setVelocity(0, 0);
+      world.add(b3);     //adds this box to the world with its specified values
+
+      q = 0;
+    }
+
+    aV = arduino.analogRead(pP);
+    aV2 = arduino.analogRead(pP2);
+    background(150);
+    rect(345, 0, 10, 200);
+    if (keyPressed) {
+      if (key == 'w') {     //if a key is pressed, accelarate in the coresponding direction
+        u = 1;
+      }
+      if (key == 'a') {
+        l = 1;
+      }
+      if (key == 's') {
+        d = 1;
+      }
+      if (key == 'd') {
+        r = 1;
+      }
+      if (keyCode == UP) {     //other car accelaration
+        u2 = 1;
+      }
+      if (keyCode == LEFT) {
+        ll = 1;
+      }
+      if (keyCode == DOWN) {
+        d2 = 1;
+      }
+      if (keyCode == RIGHT) {
+        r2 = 1;
+      }
+    }
+    if (u == 1) {
+      b2.adjustVelocity(0, -(aV/40));     //these 8 statements are what is adding the velocity
+      b2.setRotation(0);     //sets the rotation so the car is facing the direction that coresponds with the key
+    }
+    if (l == 1) {
+      b2.adjustVelocity(-(aV/40), 0);
+      b2.setRotation(3*PI/2);
+    }
+    if (d == 1) {
+      b2.adjustVelocity(0, (aV/40));
+      b2.setRotation(PI);
+    }
+    if (r == 1) {
+      b2.adjustVelocity((aV/40), 0);
+      b2.setRotation(PI/2);
+    }
+
+
+    if (u2 == 1) {
+      b3.adjustVelocity(0, -(aV2/35));     //other car
+      b3.setRotation(0);
+    }
+    if (ll == 1) {
+      b3.adjustVelocity(-(aV2/35), 0);
+      b3.setRotation(3*PI/2);
+    }
+    if (d2 == 1) {
+      b3.adjustVelocity(0, (aV2/35));
+      b3.setRotation(PI);
+    }
+    if (r2 == 1) {
+      b3.adjustVelocity((aV2/35), 0);
+      b3.setRotation(PI/2);
+    }
+    world.step();     //updates everything in the world
+    world.draw();     //draws everything in the world
+    if (b3.getY()<=200 && b3.getX()>=250 && m == 1) {     //if car crosses line
+      p2p = p2p + 1;
+      m = 0;
+    }
+    if (b3.getY()>=400 && b3.getX()<=400) {     //makes shure the car goes all the way around the track
+      m = 1;
+    }
+
+    if (b2.getY()<=200 && b2.getX()>=250 && m2 == 1) {     //checks it for the other car
+      p1p = p1p + 1;
+      m2 = 0;
+    }
+    if (b2.getY()>=400 && b2.getX()<=400) {     //other car
+      m2 = 1;
+    }
+
+    textSize(20);
+    text("Player 1 Score: "+p1p, 10, 25);     //displays player 1 score
+    text("Player 2 Score: "+p2p, 625, 25);     //displays player 2 score
+    if (p1p>=10) {
+      textSize(75);
+      text("Player 1 Wins!!!", 100, 250);     //player 1 wins if score is above 10
+    }
+    if (p2p>=10) {
+      textSize(75);
+      text("Player 2 Wins!!!", 100, 250);     //player 2 wins if score is above 10
+    }
+  }
+}
