@@ -1,0 +1,48 @@
+class Level0 {     //main menu calss
+
+  FBox box;     //new box
+  FBox b2;     //new box
+  FBox b3;     //new box
+  float h;     //new float
+
+
+
+
+  void run() {
+    background(175);
+    if (q == 1) {     //it will run this if statement once
+      world.clear();     //deleats everything currently in the world
+      world.setEdges(0, 0, 800, 600);
+      
+      b2 = new FBox(100,100);
+      b2.setPosition(200,300);
+      b2.setFill(255);
+      b2.setGrabbable(false);
+      world.add(b2);     //adds this box to the world with its specified values
+      
+      b3 = new FBox(100,100);
+      b3.setPosition(400,300);
+      b3.setFill(255);
+      b3.setGrabbable(false);
+      world.add(b3);     //adds this box to the world with its specified values
+      
+      q = 0;     //makes it so the if statement only runs once
+    }
+    
+    world.step();     //updates everything in the world
+    world.draw();     //draws everything in the world
+    textSize(50);
+    fill(0);
+    text("1",175,325);     //for lvl 1
+    text("2",375,325);     //coming soon....
+  }
+}
+
+void mousePressed(){
+  if(level==0){
+    if(mouseX<=250 && mouseX>=150 && mouseY>=250 && mouseY<=350){     //if the mouse is within the #1 box
+      level = 1;     //level one starts
+      q = 1;     //now it is allowed to run that if statement one more time
+    }
+  }
+}
