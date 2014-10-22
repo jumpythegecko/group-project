@@ -32,38 +32,38 @@ for (int j = 0; j <= 12; j++) {     //loop that lights one light, then 2 lights,
 }
 
 
-void pulseOneLed(int pixelNumber, uint32_t color, int duration) {
-  for(int i = 0; i < pulseBrightness; i+=10) {
+void pulseOneLed(int pixelNumber, uint32_t color, int duration) { //This will turn on a light
+  for(int i = 0; i < pulseBrightness; i+=10) { //This makes the light dim or bright
  
  
-    strip.setBrightness(i);
-    turnPixelOn(pixelNumber, color);
-    delay(duration/2);
+    strip.setBrightness(i); //Makes lights diffrent color/ brighter
+    turnPixelOn(pixelNumber, color); //This makes the light turn on 
+    delay(duration/2); // This is what makes each light turn at a different time
   }
   
-   for(int i = pulseBrightness; i > 0; i-=10) {
+   for(int i = pulseBrightness; i > 0; i-=10) { //This makes the light dim or bright
    
    
-    strip.setBrightness(i);
-    turnPixelOn(pixelNumber, color);
-    delay(duration/2);
+    strip.setBrightness(i); //Makes lights diffrent color/ brighter
+    turnPixelOn(pixelNumber, color);//This makes the light turn on
+    delay(duration/2);//This is what makes each light turn at a different time
   }
 }
 
-int setIncrementSize(int firstNeoPixel, int lastNeoPixel, int delayDuration) {
-  int var = lastNeoPixel - firstNeoPixel;
-  switch (var) {
-    case 1:
+int setIncrementSize(int firstNeoPixel, int lastNeoPixel, int delayDuration) { //Delay in each light
+  int var = lastNeoPixel - firstNeoPixel; //How fast each light turns on
+  switch (var) { //Turns on switch for light
+    case 1: //First light
       
       
-      return 10;
-      break;
-    case 2:
+      return 10; //Return to the previous command
+      break; //Exit from the loop
+    case 2: //Second light
       
       
-      return 10;
-      break;
-    case 3:
+      return 10; //Return to the previous command
+      break; //Exit from the loop
+    case 3: //Second light
       
       
       return 5;
