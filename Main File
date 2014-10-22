@@ -1,0 +1,102 @@
+import processing.serial.*;     //LIBRARY
+
+import g4p_controls.*;     //LIBRARY
+
+import fisica.*;     //LIBRARY
+
+import processing.serial.*;     //LIBRARY
+
+import cc.arduino.*;     //LIBRARY
+
+import ddf.minim.*;     //LIBRARY
+
+
+Arduino arduino;     //creates a new arduino object
+FWorld world;     //new world object
+Level1 l1;     //new lvl 1 object
+Level0 l0;     //new main menu object
+Minim minim;     //new music player object
+AudioPlayer player;
+int u = 0;     //moving player 1
+int l = 0;
+int d = 0;
+int r = 0;
+int u2 = 0;     //moving player 2
+int ll = 0;
+int d2 = 0;
+int r2 = 0;
+int level = 0;     //what level will be displayed
+int q = 1;
+int pP = 0;     //pressure pin
+int aV = 10;     //analogValue
+int pP2 = 5;     //pressure pin
+int aV2 = 10;     //analogValue
+int p1p = 0;     //player 1 points
+int p2p = 0;     //player 2 points
+int m = 0;     //detects if players actually go around the track
+int m2 = 0;
+String p1n = "Player 1";     //scores
+String p2n = "Player 2";     //scores
+
+void setup() {
+  size(800, 600);
+  Fisica.init(this);     //initiating the fisica library
+  minim = new Minim(this);     //initiating the sound library
+  world = new FWorld();     //creates a fisica world to stare the objects
+  world.setEdges(0, 0, 800, 600);     //objects cant leave the screen
+  world.setGravity(0, 0);     //no gravity
+  l1 = new Level1();     //new level one object
+  l0 = new Level0();     //new level 0 or main menu object
+  println(Arduino.list());     //prints status of arduino in the little box
+  arduino = new Arduino(this, Arduino.list()[3], 57600);     //how processing communicates with the arduino
+  arduino.pinMode(pP, arduino.INPUT);     //input for pressure pin
+  arduino.pinMode(pP2, arduino.INPUT);
+  player = minim.loadFile("Kashmir.mp3");     //plays Kashmir by led zepplen
+  player.play();     //plays it
+}
+
+void draw() {
+//  println(pP2);
+  if (level==0) {     //run level 0 or main menu
+    l0.run();
+  }
+  if (level==1) {     //run level 1
+    l1.run();
+  }
+  if (keyPressed) {
+    if (key == 'm') {     //press "m" at any time to return to main menu, or level 0
+      level = 0;
+      q = 1;
+    }
+  }
+}
+
+
+
+
+void keyReleased() {
+  if (key == 'w') {     //universal function for stoping accelaration in a direction if the corresponding key is released
+    u = 0;
+  }
+  if (key == 'a') {
+    l = 0;
+  }
+  if (key == 's') {
+    d = 0;
+  }
+  if (key == 'd') {
+    r = 0;
+  }
+  if (keyCode == UP) {     //other car 
+    u2 = 0;
+  }
+  if (keyCode == LEFT) {
+    ll = 0;
+  }
+  if (keyCode == DOWN) {
+    d2 = 0;
+  }
+  if (keyCode == RIGHT) {
+    r2 = 0;
+  }
+}
